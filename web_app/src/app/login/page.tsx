@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { 
-    signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword, 
-    GoogleAuthProvider, 
-    signInWithPopup 
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ export default function LoginPage() {
 
         try {
             let userCredential;
-            
+
             if (isRegister) {
                 // KAYIT OLMA İŞLEMİ
                 userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -48,12 +48,12 @@ export default function LoginPage() {
         } catch (error: any) {
             console.error(error);
             let message = "Bir hata oluştu.";
-            
+
             // Kullanıcı dostu hata mesajları
             if (error.code === 'auth/email-already-in-use') message = "Bu e-mail zaten kullanımda.";
             else if (error.code === 'auth/invalid-credential') message = "E-mail veya şifre hatalı.";
             else if (error.code === 'auth/weak-password') message = "Şifre çok zayıf (en az 6 karakter olmalı).";
-            
+
             toast.error(message);
         } finally {
             setLoading(false);
@@ -84,8 +84,8 @@ export default function LoginPage() {
                         {isRegister ? "Hesap Oluştur" : "Giriş Yap"}
                     </CardTitle>
                     <CardDescription className="text-neutral-400">
-                        {isRegister 
-                            ? "Fotoğraf oylamasına katılmak için kayıt olun" 
+                        {isRegister
+                            ? "Fotoğraf oylamasına katılmak için kayıt olun"
                             : "Oylamaya devam etmek için giriş yapın"}
                     </CardDescription>
                 </CardHeader>
@@ -121,20 +121,23 @@ export default function LoginPage() {
                             className="w-full bg-white text-black hover:bg-neutral-200"
                             disabled={loading}
                         >
-                            {loading 
-                                ? "İşlem yapılıyor..." 
+                            {loading
+                                ? "İşlem yapılıyor..."
                                 : (isRegister ? "Kayıt Ol" : "Giriş Yap")}
                         </Button>
                     </form>
 
-                    <div className="text-center text-sm text-neutral-400 mt-4">
-                        {isRegister ? "Zaten hesabın var mı? " : "Hesabın yok mu? "}
-                        <button 
+                    <div className="flex flex-col gap-2 mt-4 text-center">
+                        <span className="text-sm text-neutral-400">
+                            {isRegister ? "Zaten hesabın var mı?" : "Hesabın yok mu?"}
+                        </span>
+                        <Button
+                            variant="link"
                             onClick={() => setIsRegister(!isRegister)}
-                            className="text-white hover:underline font-medium"
+                            className="text-white underline-offset-4 hover:text-neutral-300 p-0 h-auto font-normal"
                         >
-                            {isRegister ? "Giriş Yap" : "Kayıt Ol"}
-                        </button>
+                            {isRegister ? "Giriş Yap" : "Hemen Kayıt Ol"}
+                        </Button>
                     </div>
 
                     <div className="relative my-4">
