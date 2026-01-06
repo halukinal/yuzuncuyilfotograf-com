@@ -78,10 +78,19 @@ export default function GalleryPage() {
 
   return (
     <main className="min-h-screen bg-neutral-950 text-white p-4 sm:p-8">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Oylama Galerisi</h1>
+      <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
         <div className="flex items-center gap-4">
-          <span className="text-sm text-neutral-400">{user.email}</span>
+          <div className="relative w-12 h-12 md:w-16 md:h-16 overflow-hidden rounded-full border border-neutral-800">
+            <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-cover" />
+          </div>
+          <div>
+            <h1 className="text-xl md:text-3xl font-bold tracking-tight">Oylama Galerisi</h1>
+            <p className="text-xs md:text-sm text-neutral-400">Yüzüncü Yıl Tarih Kültür Sanat ve Fotoğraf Derneği</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-neutral-400 hidden sm:inline-block">{user.email}</span>
           <Button variant="outline" onClick={() => auth.signOut()} className="border-neutral-800 hover:bg-neutral-800">
             Çıkış Yap
           </Button>
