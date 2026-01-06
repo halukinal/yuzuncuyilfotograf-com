@@ -108,12 +108,15 @@ export default function GalleryPage() {
               key={photo.id}
               className={`break-inside-avoid bg-neutral-900 border-neutral-800 overflow-hidden transition-opacity ${isVoted ? 'opacity-60 hover:opacity-100' : ''}`}
             >
-              <div className="relative aspect-[3/4] w-full bg-neutral-950">
+              <div
+                className="relative aspect-[3/4] w-full bg-neutral-950 cursor-pointer group"
+                onClick={() => handleVoteClick(photo)}
+              >
                 <Image
                   src={photo.url}
                   alt={photo.id}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
