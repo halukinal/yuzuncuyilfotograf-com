@@ -189,14 +189,19 @@ export function VotingDialog({ open, onOpenChange, photo }: VotingDialogProps) {
                                 </div>
 
                                 <DialogFooter className="mt-4 pt-4 border-t border-white/10 shrink-0">
-                                    <Button
-                                        size="lg"
-                                        className="w-full bg-white text-black hover:bg-neutral-200 font-bold text-lg h-12 md:h-14 shadow-lg transition-transform active:scale-[0.98]"
-                                        onClick={handleSave}
-                                        disabled={loading || score === null}
-                                    >
-                                        {loading ? "Kaydediliyor..." : (existingVote ? "Oyu Güncelle" : "OYU GÖNDER")}
-                                    </Button>
+                                    <div className="w-full flex flex-col">
+                                        <Button
+                                            size="lg"
+                                            className="w-full bg-white text-black hover:bg-neutral-200 font-bold text-lg h-12 md:h-14 shadow-lg transition-transform active:scale-[0.98]"
+                                            onClick={handleSave}
+                                            disabled={loading || score === null}
+                                        >
+                                            {loading ? "Kaydediliyor..." : (existingVote ? "Oyu Güncelle" : "OYU GÖNDER")}
+                                        </Button>
+                                        <p className="text-[0.85rem] text-[#6c757d] italic text-center mt-3 leading-tight">
+                                            Oyunuzu onaylarken; teknik estetiğin yanı sıra fotoğrafın hikayesini ve &apos;Tarihin İzinde&apos; temasını ne kadar yansıttığını değerlendirmeyi unutmayınız.
+                                        </p>
+                                    </div>
                                 </DialogFooter>
                             </div>
                         </div>
@@ -204,6 +209,6 @@ export function VotingDialog({ open, onOpenChange, photo }: VotingDialogProps) {
                 </div>
 
             </DialogContent>
-        </Dialog>
+        </Dialog >
     );
 }
