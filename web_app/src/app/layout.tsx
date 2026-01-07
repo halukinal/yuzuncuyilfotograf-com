@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   description: "Jüri Oylama Sistemi",
 };
 
+import { CacheClearer } from "@/components/CacheClearer";
+import { CountdownGuard } from "@/components/CountdownGuard";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,7 +37,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased bg-neutral-950 text-neutral-100`}
       >
-        {children}
+        <CacheClearer />
+        <CountdownGuard>
+          {children}
+        </CountdownGuard>
         <Toaster />
       </body>
     </html>
