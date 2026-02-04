@@ -2,6 +2,36 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 
+// Simple in-memory rate limiter
+const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
+const RATE_LIMIT_WINDOW = 30 * 60 * 1000; // 30 minutes
+const MAX_REQUESTS = 5;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const limitData = rateLimitMap.get(ip);
+
+  if (!limitData || now - limitData.lastReset > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, lastReset: now });
+    return false;
+  }
+
+  if (limitData.count >= MAX_REQUESTS) {
+    return true;
+  }
+
+  limitData.count += 1;
+  return false;
+}
+
+// Sanitization function for filenames
+function sanitizeFilename(name: string): string {
+  return name
+    .replace(/[^a-z0-9\u00C0-\u017F\s.-]/gi, "_") // Replace non-alphanumeric/non-unicode chars with underscore
+    .replace(/\s+/g, "-") // Replace spaces with dashes
+    .slice(0, 100); // Limit length
+}
+
 const submissionSchema = z.object({
   fullName: z.string().min(2, "Ad Soyad en az 2 karakter olmalıdır"),
   idNumber: z.string().min(1, "Numara girilmesi zorunludur"),
@@ -11,15 +41,32 @@ const submissionSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  console.log("Submission request received...");
+  const ip = req.headers.get("x-forwarded-for") || "unknown";
+
+  if (isRateLimited(ip)) {
+    console.warn(`Rate limit exceeded for IP: ${ip}`);
+    return NextResponse.json(
+      { error: "Çok fazla deneme yaptınız. Lütfen 30 dakika sonra tekrar deneyin." },
+      { status: 429 }
+    );
+  }
+
+  console.log(`Submission request received from IP: ${ip}`);
+
   try {
     const formData = await req.formData();
 
-    const fullName = formData.get("fullName") as string;
-    const idNumber = formData.get("idNumber") as string;
-    const email = formData.get("email") as string;
+    const fullName = (formData.get("fullName") as string)?.trim();
+    const idNumber = (formData.get("idNumber") as string)?.trim();
+    const email = (formData.get("email") as string)?.trim().toLowerCase();
     const userType = formData.get("userType") as "student" | "staff";
-    const photoTitles = JSON.parse(formData.get("photoTitles") as string);
+
+    let photoTitles: string[] = [];
+    try {
+      photoTitles = JSON.parse(formData.get("photoTitles") as string);
+    } catch (e) {
+      return NextResponse.json({ error: "Geçersiz eser başlıkları formatı." }, { status: 400 });
+    }
 
     // Validate text data
     const validation = submissionSchema.safeParse({ fullName, idNumber, email, userType, photoTitles });
@@ -46,18 +93,24 @@ export async function POST(req: NextRequest) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
-      // Basic file validation
-      if (!file.type.match(/image\/jpeg/)) {
+      // Stricter file validation
+      if (!file.type.match(/^image\/jpe?g$/i)) {
         return NextResponse.json({ error: "Sadece .jpg ve .jpeg formatları kabul edilmektedir." }, { status: 400 });
       }
 
       const buffer = Buffer.from(await file.arrayBuffer());
+      // Validate magic numbers for JPEG
+      if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8) {
+        return NextResponse.json({ error: "Geçersiz dosya formatı. Lütfen gerçek bir JPEG dosyası yükleyin." }, { status: 400 });
+      }
+
       if (buffer.length < 1024 * 1024 || buffer.length > 10 * 1024 * 1024) {
         return NextResponse.json({ error: "Her dosya 1MB - 10MB arasında olmalıdır." }, { status: 400 });
       }
 
+      const sanitizedTitle = sanitizeFilename(photoTitles[i] || `Eser-${i + 1}`);
       attachments.push({
-        filename: `${photoTitles[i] || `Eser-${i + 1}`}.jpg`,
+        filename: `${sanitizedTitle}.jpg`,
         content: buffer,
       });
     }
@@ -77,11 +130,11 @@ export async function POST(req: NextRequest) {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS, // App Password
       },
-      // Using 587 (STARTTLS) is often safer for local dev environments
       secure: false,
       tls: {
-        rejectUnauthorized: false // Helps in some local dev scenarios
-      }
+        rejectUnauthorized: false
+      },
+      connectionTimeout: 10000, // 10 seconds timeout
     });
 
     // Verify connection configuration
@@ -117,7 +170,7 @@ export async function POST(req: NextRequest) {
       from: process.env.GMAIL_USER,
       to: email,
       subject: "Başvurunuz Alındı - DPÜ Ramazan Fotoğraf Yarışması",
-      text: ` Sayın ${fullName},
+      text: `Sayın ${fullName},
       
 "Objektifimden Kütahya’da Ramazan" fotoğraf yarışması başvurunuz başarıyla sistemimize ulaşmıştır.
 
@@ -126,10 +179,21 @@ Başvuru Detayları:
 - Numara: ${idNumber}
 - Eser Sayısı: ${attachments.length}
 
+Onaylanan Şartlar ve Beyanlar:
+1. KVKK Onayı: 6698 sayılı KVKK kapsamında kişisel verilerimin işlenmesini ve fotoğraflarımın sergi/sosyal medya amaçlı kullanımını kabul ediyorum. (ONAYLANDI)
+2. Özgünlük Taahhüdü: Fotoğrafların tamamen şahsıma ait olduğunu, yapay zeka kullanılmadığını ve profesyonel manipülasyon (aşırı oynama) yapılmadığını taahhüt ederim. (ONAYLANDI)
+3. Şartname Onayı: Yarışma şartnamesini okudum, anladım ve belirtilen tüm kurallara uymayı kabul ediyorum. (ONAYLANDI)
+
+Yarışma Şartnamesi: https://docs.google.com/document/d/1QjkzaK2elcV69G1mm5Phm5u99VYsQg_clTXmp2k-Dy0/edit?usp=sharing
+
 Başvurunuz jüri değerlendirmesine alınacaktır. Yarışmaya katıldığınız için teşekkür eder, başarılar dileriz.
 
 Saygılarımızla,
-Dumlupınar Üniversitesi Fotoğraf Yarışması Düzenleme Kurulu`,
+Dumlupınar Üniversitesi & Yüzüncü Yıl Derneği
+Fotoğraf Yarışması Düzenleme Kurulu
+
+---
+Bu e-posta, "Objektifimden Kütahya’da Ramazan" Fotoğraf Yarışması başvuru sistemi tarafından otomatik olarak oluşturulmuştur. Lütfen bu e-postayı yanıtlamayınız. Sorularınız için iletişim sayfamızdaki kanalları kullanabilirsiniz.`,
     };
 
     try {
@@ -138,8 +202,6 @@ Dumlupınar Üniversitesi Fotoğraf Yarışması Düzenleme Kurulu`,
       console.log("Auto-reply sent successfully!");
     } catch (replyError) {
       console.error("Auto-reply failed (Invalid Email?):", replyError);
-      // We still return success because the admin got the main mail, 
-      // but we log that the applicant's mail might be invalid.
     }
 
     return NextResponse.json({ message: "Başvurunuz ve fotoğraflarınız başarıyla iletilmiştir. Bilgilendirme e-postası adresinize gönderildi!" });
@@ -148,3 +210,4 @@ Dumlupınar Üniversitesi Fotoğraf Yarışması Düzenleme Kurulu`,
     return NextResponse.json({ error: "Bir hata oluştu. Lütfen tekrar deneyin." }, { status: 500 });
   }
 }
+

@@ -1,0 +1,127 @@
+{
+  "site_config": {
+    "layout": {
+      "seo_title": "Objektifimden Kütahya’da Ramazan Fotoğraf Yarışması 2026",
+      "seo_description": "Kütahya Dumlupınar Üniversitesi ve Yüzüncü Yıl Derneği iş birliğiyle düzenlenen ödüllü fotoğraf yarışması. Ramazan'ın manevi ruhunu ve Kütahya'nın kültürünü yansıtan karelerinizi bekliyoruz.",
+      "canonical_url": "https://yuzuncuyilfotograf.com",
+      "keywords": "Kütahya, Ramazan, Fotoğraf Yarışması, DPÜ, Ödüllü Yarışma, 2026 Yarışmalar, Fotoğrafçılık"
+    }
+  },
+  "page_content": {
+    "hero": {
+      "title": "Objektifimden Kütahya’da Ramazan",
+      "description": "Ramazan ayının manevi coşkusunu, geleneksel güzelliklerini ve paylaşma kültürünü Kütahya'nın her köşesinde senin gözünden görmek istiyoruz.",
+      "stats_bar": [
+        {
+          "label": "Son Başvuru",
+          "value": "13 Mart 2026"
+        },
+        {
+          "label": "Toplam Ödül",
+          "value": "50.000 TL+"
+        },
+        {
+          "label": "Kategori",
+          "value": "Dijital Fotoğraf"
+        }
+      ]
+    },
+    "about": {
+      "section_title": "Yarışma Hakkında",
+      "purpose": "Yarışma kapsamında; Ramazan ayının geleneksel güzellikleri, camilerdeki manevi atmosfer, iftar öncesi pide kuyrukları, akşam vakti mahya ve kandillerin renkli ışıltıları, Ramazan’ın manevi coşkusu ve paylaşma kültürü fotoğraf kareleriyle yansıtılacaktır.",
+      "target_audience": "Yarışmaya yalnızca Kütahya Dumlupınar Üniversitesi öğrencileri, akademik ve idari personeli katılabilir.",
+      "exhibition_detail": "Yarışma sonunda seçilecek 30 eser, nitelikli bir fotoğraf sergisi ile taçlandırılacaktır.",
+      "organizers": [
+        "Kütahya Dumlupınar Üniversitesi Rektörlüğü",
+        "Yüzüncü Yıl Tarih, Kültür, Sanat ve Fotoğraf Derneği"
+      ]
+    },
+    "participation_rules": [
+      "Yarışmaya katılım tamamen ücretsizdir.",
+      "Fotoğraf makinesi, drone, tablet ve cep telefonu ile çekilmiş fotoğraflar kabul edilir.",
+      "Başvuru için kurumsal e-posta adresi (@ogr.dpu.edu.tr veya @dpu.edu.tr) kullanımı zorunludur.",
+      "Her katılımcı en fazla 3 (üç) adet eserle katılabilir.",
+      "Fotoğraflar üzerinde isim, numara, imza veya logo gibi görseli etkileyen hiçbir unsur bulunamaz.",
+      "Yapay zeka ile üretilen veya manipüle edilmiş fotoğraflar kesinlikle kabul edilmez.",
+      "Fotoğraflar yarışma tarihleri içerisinde bizzat yarışmacı tarafından çekilmiş olmalıdır."
+    ],
+    "prizes": [
+      {
+        "rank": "Birincilik Ödülü",
+        "amount": "20.000 TL",
+        "color": "gold"
+      },
+      {
+        "rank": "İkincilik Ödülü",
+        "amount": "15.000 TL",
+        "color": "silver"
+      },
+      {
+        "rank": "Üçüncülük Ödülü",
+        "amount": "10.000 TL",
+        "color": "bronze"
+      },
+      {
+        "rank": "Mansiyon Ödülleri",
+        "amount": "3.000 TL",
+        "color": "blue"
+      }
+    ],
+    "jury_section": {
+      "organizing_committee": [
+        {
+          "name": "Prof. Dr. Süleyman KIZILTOPRAK",
+          "role": "Kütahya Dumlupınar Üniversitesi Rektörü"
+        },
+        {
+          "name": "Öğr. Gör. Mustafa Çağrı DEMİR",
+          "role": "Düzenleme Kurulu Üyesi"
+        },
+        {
+          "name": "Yaşar SAYGILI",
+          "role": "Yüzüncü Yıl Derneği Başkanı"
+        }
+      ],
+      "selective_jury": {
+        "president": {
+          "name": "Amil ÜÇBAŞ",
+          "role": "Fotoğraf Sanatçısı / Jüri Başkanı"
+        },
+        "members": [
+          { "name": "Mehmet Sabri TEZCAN", "role": "KÜSAD Üyesi" },
+          { "name": "Doç. Dr. Gökhan KUZUCANLI", "role": "Akademisyen" },
+          { "name": "Dr. Öğr. Üyesi İrem Aksoy", "role": "Akademisyen" },
+          { "name": "Doç. Dr. Pınar YAZKAÇ", "role": "Akademisyen" },
+          { "name": "Haluk İNAL", "role": "Videograf / Dernek Üyesi" },
+          { "name": "Abdulkadir AKTAŞ", "role": "Grafik Tasarımcı / Dernek Üyesi" },
+          { "name": "Yusuf ARSLAN", "role": "Fotoğraf Sanatçısı" },
+          { "name": "Mehmet YAYLIOĞLU", "role": "Gazeteci" }
+        ]
+      }
+    },
+    "technical_specs": {
+      "format": "JPG/JPEG",
+      "resolution": "150-300 DPI",
+      "min_width": "2400px",
+      "size_range": "1MB - 10MB",
+      "naming": "Ad_Soyad_EserinAdı_No.jpg"
+    },
+    "calendar": {
+      "start_date": "10 Şubat 2026",
+      "end_date": "13 Mart 2026",
+      "results_date": "17 Mart 2026"
+    }
+  },
+  "footer_content": {
+    "contact": {
+      "organization": "Yüzüncü Yıl Tarih Kültür Sanat ve Fotoğraf Derneği",
+      "phone": "0553 851 00 84",
+      "email": "info@yuzuncuyilfotograf.com",
+      "address": "Kütahya, Türkiye"
+    },
+    "social_media": [
+      { "platform": "Instagram", "url": "#" },
+      { "platform": "Web", "url": "https://yuzuncuyilfotograf.com" }
+    ]
+  }
+}
