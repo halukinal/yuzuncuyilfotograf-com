@@ -8,6 +8,12 @@ node_modules/
 !.yarn/releases
 !.yarn/versions
 
+# Whitelist public images (bypassing parent .gitignore)
+!public/*.png
+!public/*.jpeg
+!public/*.jpg
+!public/*.svg
+
 # testing
 /coverage
 
