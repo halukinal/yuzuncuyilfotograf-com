@@ -200,7 +200,7 @@ export default function ApplicationPage() {
                                 }`}
                         >
                             <GraduationCap className={userType === "student" ? "text-[#F59E0B]" : "text-[#1A1A1A]/40"} size={32} />
-                            <span className="font-black uppercase italic tracking-tighter">Öğrenciyim</span>
+                            <span className="font-black uppercase italic tracking-tighter">Öğrenci</span>
                         </button>
                         <button
                             type="button"
@@ -211,7 +211,7 @@ export default function ApplicationPage() {
                                 }`}
                         >
                             <Briefcase className={userType === "staff" ? "text-[#F59E0B]" : "text-[#1A1A1A]/40"} size={32} />
-                            <span className="font-black uppercase italic tracking-tighter text-center">Akademik/İdari Personelim</span>
+                            <span className="font-black uppercase italic tracking-tighter text-center">Akademik/İdari Personel</span>
                         </button>
                     </div>
 

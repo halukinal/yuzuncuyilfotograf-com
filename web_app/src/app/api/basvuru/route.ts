@@ -129,8 +129,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Check for credentials
+    console.log("Checking GMAIL_USER:", process.env.GMAIL_USER ? "Present" : "Missing");
+    console.log("Checking GMAIL_PASS:", process.env.GMAIL_PASS ? "Present" : "Missing");
+
     if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
-      console.error("Missing Gmail credentials in .env.local");
+      console.error("Missing Gmail credentials in .env.local. GMAIL_USER:", process.env.GMAIL_USER, "GMAIL_PASS:", process.env.GMAIL_PASS);
       return NextResponse.json({ error: "Sistem yapılandırması eksik (Email credentials)." }, { status: 500 });
     }
 
