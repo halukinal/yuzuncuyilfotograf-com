@@ -5,7 +5,7 @@ from pathlib import Path
 
 def main():
     # 1. Girdi ve Yol Bilgileri
-    ANA_DIZIN = "/Volumes/KIOXIA/fotograf_yarismasi"
+    ANA_DIZIN = "/Users/halukinal/Downloads/Arşiv"
     JURI_KLASOR_ADI = "_JURI_OYLAMA_HAVUZU"
     JURI_KLASOR_YOLU = os.path.join(ANA_DIZIN, JURI_KLASOR_ADI)
     
