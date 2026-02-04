@@ -29,10 +29,10 @@ export function LandingNavbar() {
             <div className="bg-[#FFFBEB] h-[61px] flex items-center justify-between px-4 sm:px-8 text-[#1A1A1A] shadow-md border-b border-[#064E3B]/10">
                 <Link href="/" className="flex items-center gap-2">
                     <div className="bg-white p-1 rounded-sm relative h-8 w-10 border border-neutral-100">
-                        <Image src="/dernek-logo.jpeg" alt="DPÜ Logo" fill className="object-contain" />
+                        <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-contain" />
                     </div>
-                    <span className="font-black tracking-tighter text-sm md:text-lg uppercase text-[#064E3B]">
-                        DPÜ RAMAZAN FOTOĞRAF YARIŞMASI
+                    <span className="font-black tracking-tighter text-[10px] md:text-sm uppercase text-[#064E3B] leading-none">
+                        Yüzüncü Yıl Tarih Kültür Sanat<br /> Ve Fotoğraf Derneği
                     </span>
                 </Link>
 

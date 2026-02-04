@@ -7,11 +7,16 @@ import Image from "next/image";
 export function LandingFooter() {
     return (
         <footer className="bg-[#1A1A1A] text-[#FFFBEB]/70 py-16 px-4 sm:px-8 border-t border-[#064E3B]">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <div className="space-y-6">
-                    <div className="flex items-center gap-2 text-[#FFFBEB]">
-                        <div className="relative h-10 w-12 overflow-hidden rounded border border-[#FFFBEB]/10">
-                            <Image src="/dernek-logo.jpeg" alt="DPÜ Logo" fill className="object-contain" />
+                    <div className="flex items-center gap-3 text-[#FFFBEB]">
+                        <div className="flex gap-1">
+                            <div className="relative h-10 w-12 overflow-hidden rounded border border-[#FFFBEB]/10 bg-white">
+                                <Image src="/dpü_logo.png" alt="DPÜ Logo" fill className="object-contain p-1" />
+                            </div>
+                            <div className="relative h-10 w-12 overflow-hidden rounded border border-[#FFFBEB]/10 bg-white">
+                                <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-contain" />
+                            </div>
                         </div>
                         <span className="font-black text-lg leading-tight uppercase italic tracking-tighter">DPÜ RAMAZAN <br /> FOTOĞRAF YARIŞMASI</span>
                     </div>
@@ -53,20 +58,6 @@ export function LandingFooter() {
                     </ul>
                 </div>
 
-                <div>
-                    <h3 className="text-[#F59E0B] font-black mb-6 uppercase tracking-widest text-sm">Bülten</h3>
-                    <p className="text-sm mb-4 italic">Gelişmelerden haberdar olmak için e-posta listemize katılın.</p>
-                    <div className="flex">
-                        <input
-                            type="email"
-                            placeholder="E-posta adresiniz"
-                            className="bg-[#064E3B]/20 border border-[#064E3B]/40 rounded-l px-4 py-2 w-full text-sm focus:outline-none focus:border-[#F59E0B] text-[#FFFBEB]"
-                        />
-                        <button className="bg-[#064E3B] text-[#FFFBEB] px-4 py-2 rounded-r font-black uppercase italic hover:bg-[#053d2e] transition-colors">
-                            Giriş
-                        </button>
-                    </div>
-                </div>
             </div>
 
             <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-[#FFFBEB]/5 text-center text-[10px] uppercase font-bold tracking-widest text-[#FFFBEB]/30">

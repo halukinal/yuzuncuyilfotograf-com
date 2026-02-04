@@ -29,7 +29,7 @@ export default function LandingPage() {
             <LandingNavbar />
 
             {/* Hero Section */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden pt-[116px]">
+            <section className="relative min-h-screen flex flex-col items-center overflow-hidden pt-[116px]">
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -46,7 +46,7 @@ export default function LandingPage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8 }}
-                    className="relative z-10 text-center px-4 max-w-5xl mx-auto"
+                    className="relative z-10 text-center px-4 max-w-5xl mx-auto flex-grow flex flex-col justify-center py-12"
                 >
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
@@ -56,6 +56,15 @@ export default function LandingPage() {
                     >
                         <Camera size={16} /> 2026 Ramazan Fotoğraf Yarışmasına Hoş Geldiniz
                     </motion.div>
+
+                    <div className="flex justify-center items-center gap-6 mb-8">
+                        <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-105 transition-transform">
+                            <Image src="/dpü_logo.png" alt="DPÜ Logo" fill className="object-contain" />
+                        </div>
+                        <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-105 transition-transform">
+                            <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-contain rounded-full" />
+                        </div>
+                    </div>
 
                     <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-[0.9] tracking-tighter uppercase italic text-[#FFFBEB] pb-2">
                         Objektifimden <br />
@@ -82,23 +91,23 @@ export default function LandingPage() {
                     </div>
                 </motion.div>
 
-                <div className="absolute bottom-0 left-0 w-full bg-[#064E3B]/80 backdrop-blur-md border-t border-[#F59E0B]/20 py-6 text-[#FFFBEB]">
+                <div className="relative w-full bg-[#064E3B]/80 backdrop-blur-md border-t border-[#F59E0B]/20 py-6 text-[#FFFBEB]">
                     <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
-                        <div className="flex flex-col items-center border-r border-[#FFFBEB]/10 last:border-none">
-                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic">13 MART 2026</span>
-                            <span className="text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest">Son Başvuru</span>
+                        <div className="flex flex-col items-center border-r border-[#FFFBEB]/10 md:last:border-none">
+                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic text-center leading-none">13 MART 2026</span>
+                            <span className="text-[10px] md:text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest mt-1">Son Başvuru</span>
                         </div>
-                        <div className="flex flex-col items-center border-r border-[#FFFBEB]/10 last:border-none">
-                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic">50.000 TL+</span>
-                            <span className="text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest">Toplam Ödül</span>
+                        <div className="flex flex-col items-center border-r border-[#FFFBEB]/10 md:last:border-none">
+                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic text-center leading-none">50.000 TL+</span>
+                            <span className="text-[10px] md:text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest mt-1">Toplam Ödül</span>
                         </div>
-                        <div className="flex flex-col items-center border-r border-[#FFFBEB]/10 last:border-none">
-                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic">DİJİTAL</span>
-                            <span className="text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest">Kategori</span>
+                        <div className="flex flex-col items-center border-r border-[#FFFBEB]/10 md:last:border-none">
+                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic text-center leading-none">DİJİTAL</span>
+                            <span className="text-[10px] md:text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest mt-1">Kategori</span>
                         </div>
-                        <div className="flex flex-col items-center border-r border-[#FFFBEB]/10 last:border-none">
-                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic">11 JÜRİ</span>
-                            <span className="text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest">Seçici Kurul</span>
+                        <div className="flex flex-col items-center last:border-none">
+                            <span className="text-[#F59E0B] font-black text-2xl md:text-3xl tracking-tighter italic text-center leading-none">9 JÜRİ</span>
+                            <span className="text-[10px] md:text-xs uppercase text-[#FFFBEB]/60 font-bold tracking-widest mt-1">Seçici Kurul</span>
                         </div>
                     </div>
                 </div>
@@ -292,9 +301,6 @@ export default function LandingPage() {
                             >
                                 Yarışma Şartnamesini Oku
                             </Link>
-                            <p className="text-[#064E3B] font-black text-xs uppercase italic tracking-widest flex items-center gap-2">
-                                <CheckCircle2 size={14} /> Şartnameyi okudum ve kabul ediyorum.
-                            </p>
                         </div>
 
                         <Link href="/basvuru" className="inline-block">

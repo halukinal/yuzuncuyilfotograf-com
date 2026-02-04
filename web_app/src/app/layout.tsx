@@ -22,6 +22,14 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Objektifimden Kütahya’da Ramazan Fotoğraf Yarışması 2026",
   description: "Kütahya Dumlupınar Üniversitesi ve Yüzüncü Yıl Derneği iş birliğiyle düzenlenen ödüllü fotoğraf yarışması. Ramazan'ın manevi ruhunu ve Kütahya'nın kültürünü yansıtan karelerinizi bekliyoruz.",
+  icons: {
+    icon: [
+      { url: "/dernek-logo.jpeg" },
+      { url: "/dernek-logo.jpeg", sizes: "32x32", type: "image/jpeg" },
+    ],
+    shortcut: "/dernek-logo.jpeg",
+    apple: "/dernek-logo.jpeg",
+  }
 };
 
 import { CacheClearer } from "@/components/CacheClearer";

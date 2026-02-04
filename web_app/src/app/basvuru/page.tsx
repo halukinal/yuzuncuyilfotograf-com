@@ -109,6 +109,12 @@ export default function ApplicationPage() {
             return;
         }
 
+        const totalSize = selectedFiles.reduce((sum, f) => sum + f.size, 0);
+        if (totalSize > 20 * 1024 * 1024) {
+            toast.error("Toplam dosya boyutu 20MB'ı geçemez. Lütfen fotoğrafları küçültüp tekrar deneyin.");
+            return;
+        }
+
         // Domain validation
         const domain = data.email.split("@")[1];
         if (data.userType === "student" && domain !== "ogr.dpu.edu.tr") {
@@ -166,8 +172,13 @@ export default function ApplicationPage() {
                     </Link>
                 </div>
                 <div className="text-center mb-12">
-                    <div className="relative w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-4 border-[#064E3B]/10 shadow-xl">
-                        <Image src="/dernek-logo.jpeg" alt="DPU Logo" fill className="object-cover" />
+                    <div className="flex justify-center gap-6 mb-8">
+                        <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-[#064E3B]/10 shadow-xl bg-white">
+                            <Image src="/dpü_logo.png" alt="DPÜ Logo" fill className="object-contain p-2" />
+                        </div>
+                        <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-[#064E3B]/10 shadow-xl bg-white">
+                            <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-cover" />
+                        </div>
                     </div>
                     <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-4 text-[#064E3B] uppercase italic">
                         Objektifimden Kütahya’da Ramazan
@@ -399,6 +410,6 @@ export default function ApplicationPage() {
                     </div>
                 </form>
             </div>
-        </div>
+        </div >
     );
 }

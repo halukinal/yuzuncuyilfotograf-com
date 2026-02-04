@@ -26,10 +26,16 @@ function isRateLimited(ip: string): boolean {
 
 // Sanitization function for filenames
 function sanitizeFilename(name: string): string {
-  return name
-    .replace(/[^a-z0-9\u00C0-\u017F\s.-]/gi, "_") // Replace non-alphanumeric/non-unicode chars with underscore
-    .replace(/\s+/g, "-") // Replace spaces with dashes
-    .slice(0, 100); // Limit length
+  const turkishMap: { [key: string]: string } = {
+    'ğ': 'g', 'Ğ': 'G', 'ş': 's', 'Ş': 'S', 'ı': 'i', 'İ': 'I',
+    'ö': 'o', 'Ö': 'O', 'ç': 'c', 'Ç': 'C', 'ü': 'u', 'Ü': 'U'
+  };
+
+  let sanitized = name.split('').map(char => turkishMap[char] || char).join('');
+  return sanitized
+    .replace(/[^a-z0-9\s.-]/gi, "_")
+    .replace(/\s+/g, "-")
+    .slice(0, 50); // Limit length further for safety
 }
 
 const submissionSchema = z.object({
@@ -109,10 +115,17 @@ export async function POST(req: NextRequest) {
       }
 
       const sanitizedTitle = sanitizeFilename(photoTitles[i] || `Eser-${i + 1}`);
+      console.log(`Attachment ${i + 1}: ${sanitizedTitle}.jpg (${(buffer.length / 1024 / 1024).toFixed(2)} MB)`);
+
       attachments.push({
         filename: `${sanitizedTitle}.jpg`,
         content: buffer,
       });
+    }
+
+    const totalSize = attachments.reduce((sum, att) => sum + (att.content as Buffer).length, 0);
+    if (totalSize > 20 * 1024 * 1024) { // 20MB limit for Gmail safety (base64 overhead)
+      return NextResponse.json({ error: "Toplam dosya boyutu çok büyük (Max 20MB). Lütfen fotoğrafları küçültüp tekrar deneyin." }, { status: 400 });
     }
 
     // Check for credentials
@@ -134,7 +147,9 @@ export async function POST(req: NextRequest) {
       tls: {
         rejectUnauthorized: false
       },
-      connectionTimeout: 10000, // 10 seconds timeout
+      connectionTimeout: 30000, // 30 seconds
+      greetingTimeout: 30000,
+      socketTimeout: 60000, // 1 minute
     });
 
     // Verify connection configuration
