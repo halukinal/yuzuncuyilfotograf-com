@@ -33,7 +33,7 @@ export default function LandingPage() {
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src="/hero-ramadan.png"
+                        src="/hero-bg.png"
                         alt="Dumlupınar Ramadan"
                         fill
                         className="object-cover opacity-60"
@@ -59,7 +59,7 @@ export default function LandingPage() {
 
                     <div className="flex justify-center items-center gap-6 mb-8">
                         <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-105 transition-transform">
-                            <Image src="/dpü_logo.png" alt="DPÜ Logo" fill className="object-contain" />
+                            <Image src="/dpu-logo.png" alt="DPÜ Logo" fill className="object-contain" />
                         </div>
                         <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-105 transition-transform">
                             <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-contain rounded-full" />
@@ -145,7 +145,7 @@ export default function LandingPage() {
                         </motion.div>
                     </motion.div>
                     <div className="relative aspect-square md:aspect-video rounded-3xl overflow-hidden border-4 border-[#064E3B]/10 shadow-2xl">
-                        <Image src="/about-ramadan.png" alt="Contest Traditions" fill className="object-cover" />
+                        <Image src="/about-bg.png" alt="Contest Traditions" fill className="object-cover" />
                     </div>
                 </div>
             </section>

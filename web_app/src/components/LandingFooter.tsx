@@ -12,7 +12,7 @@ export function LandingFooter() {
                     <div className="flex items-center gap-3 text-[#FFFBEB]">
                         <div className="flex gap-1">
                             <div className="relative h-10 w-12 overflow-hidden rounded border border-[#FFFBEB]/10 bg-white">
-                                <Image src="/dpü_logo.png" alt="DPÜ Logo" fill className="object-contain p-1" />
+                                <Image src="/dpu-logo.png" alt="DPÜ Logo" fill className="object-contain p-1" />
                             </div>
                             <div className="relative h-10 w-12 overflow-hidden rounded border border-[#FFFBEB]/10 bg-white">
                                 <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-contain" />

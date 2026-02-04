@@ -174,7 +174,7 @@ export default function ApplicationPage() {
                 <div className="text-center mb-12">
                     <div className="flex justify-center gap-6 mb-8">
                         <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-[#064E3B]/10 shadow-xl bg-white">
-                            <Image src="/dpü_logo.png" alt="DPÜ Logo" fill className="object-contain p-2" />
+                            <Image src="/dpu-logo.png" alt="DPÜ Logo" fill className="object-contain p-2" />
                         </div>
                         <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-[#064E3B]/10 shadow-xl bg-white">
                             <Image src="/dernek-logo.jpeg" alt="Dernek Logo" fill className="object-cover" />
