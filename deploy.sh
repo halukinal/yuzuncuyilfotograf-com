@@ -5,6 +5,8 @@ find . -name "._*" -delete
 dot_clean -m .
 
 echo "Building Next.js app..."
+# Load environment variables for the build process
+export $(grep -v '^#' .env | xargs)
 npm run build
 
 echo "Cleaning up AppleDouble files again (they might have been created during build)..."
