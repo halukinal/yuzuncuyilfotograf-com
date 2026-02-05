@@ -24,8 +24,43 @@ export default function LandingPage() {
         visible: { opacity: 1, y: 0 }
     };
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Kütahya'da Ramazan Fotoğraf Yarışması 2026",
+        "description": "Kütahya Dumlupınar Üniversitesi ve Yüzüncü Yıl Derneği iş birliğiyle düzenlenen ödüllü fotoğraf yarışması.",
+        "startDate": "2026-02-13",
+        "endDate": "2026-03-13",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+        "location": {
+            "@type": "VirtualLocation",
+            "url": "https://yuzuncuyilfotograf.com"
+        },
+        "image": [
+            "https://yuzuncuyilfotograf.com/hero-bg.png"
+        ],
+        "organizer": {
+            "@type": "Organization",
+            "name": "Yüzüncü Yıl Tarih Kültür Sanat ve Fotoğraf Derneği",
+            "url": "https://yuzuncuyilfotograf.com"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": "https://yuzuncuyilfotograf.com/basvuru",
+            "price": "0",
+            "priceCurrency": "TRY",
+            "availability": "https://schema.org/InStock",
+            "validFrom": "2026-02-01"
+        }
+    };
+
     return (
         <div className="bg-[#FFFBEB] min-h-screen text-[#1A1A1A] font-sans selection:bg-[#F59E0B] selection:text-white">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <LandingNavbar />
 
             {/* Hero Section */}

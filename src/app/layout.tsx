@@ -20,8 +20,43 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Yüzüncü Yıl Tarih Kültür Sanat ve Fotoğraf Derneği",
+  title: "Yüzüncü Yıl Tarih Kültür Sanat ve Fotoğraf Derneği | Fotoğraf Yarışması 2026",
   description: "Kütahya Dumlupınar Üniversitesi ve Yüzüncü Yıl Derneği iş birliğiyle düzenlenen ödüllü fotoğraf yarışması. Ramazan'ın manevi ruhunu ve Kütahya'nın kültürünü yansıtan karelerinizi bekliyoruz.",
+  keywords: ["fotoğraf yarışması", "Kütahya", "DPÜ", "Dumlupınar Üniversitesi", "Ramazan", "yüzüncü yıl derneği", "Kütahya Ramazan", "sanat", "kültür", "yarışma", "ödüllü yarışma"],
+  authors: [{ name: "Yüzüncü Yıl Derneği" }],
+  creator: "Yüzüncü Yıl Derneği",
+  publisher: "Yüzüncü Yıl Derneği",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://yuzuncuyilfotograf.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: "Yüzüncü Yıl Tarih Kültür Sanat ve Fotoğraf Derneği | Fotoğraf Yarışması 2026",
+    description: "Ramazan'ın manevi ruhunu Kütahya'nın köşe bucağında senin gözünden görmek istiyoruz. Ödüllü fotoğraf yarışmasına hemen başvur!",
+    url: 'https://yuzuncuyilfotograf.com',
+    siteName: 'Yüzüncü Yıl Fotoğraf Yarışması',
+    images: [
+      {
+        url: '/hero-bg.png',
+        width: 1200,
+        height: 630,
+        alt: 'Kütahya’da Ramazan Fotoğraf Yarışması',
+      },
+    ],
+    locale: 'tr_TR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Yüzüncü Yıl Tarih Kültür Sanat ve Fotoğraf Derneği | Fotoğraf Yarışması 2026",
+    description: "Ramazan'ın manevi ruhunu Kütahya'nın köşe bucağında senin gözünden görmek istiyoruz. Ödüllü fotoğraf yarışmasına hemen başvur!",
+    images: ['/hero-bg.png'],
+  },
   icons: {
     icon: [
       { url: "/dernek-logo.jpeg" },
