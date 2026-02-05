@@ -131,76 +131,57 @@ export async function POST(req: NextRequest) {
     }
 
     // Check for credentials
-    console.log("Checking GMAIL_USER:", process.env.GMAIL_USER ? "Present" : "Missing");
-    console.log("Checking GMAIL_PASS:", process.env.GMAIL_PASS ? "Present" : "Missing");
+    const resendApiKey = process.env.RESEND_API_KEY;
+    console.log("Checking RESEND_API_KEY:", resendApiKey ? "Present" : "Missing");
 
-    if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
-      console.error("Missing Gmail credentials in .env.local. GMAIL_USER:", process.env.GMAIL_USER, "GMAIL_PASS:", process.env.GMAIL_PASS);
-      return NextResponse.json({ error: "Sistem yapılandırması eksik (Email credentials)." }, { status: 500 });
+    if (!resendApiKey) {
+      console.error("Missing RESEND_API_KEY.");
+      return NextResponse.json({ error: "Sistem yapılandırması eksik (Resend API Key)." }, { status: 500 });
     }
 
-    // Email Setup
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true, // true for port 465
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS, // App Password
-      },
-      tls: {
-        rejectUnauthorized: false
-      },
-      connectionTimeout: 30000,
-      greetingTimeout: 30000,
-      socketTimeout: 60000,
-    });
+    const FROM_EMAIL = "onboarding@resend.dev"; // Eğer domain doğrulanmışsa admin@yuzuncuyilfotograf.com yapılabilir
 
-    // Verify connection configuration
-    try {
-      await transporter.verify();
-      console.log("SMTP Connection verified successfully.");
-    } catch (verifyError: any) {
-      console.error("SMTP Verification Error Details:", {
-        message: verifyError.message,
-        stack: verifyError.stack,
-        code: verifyError.code,
-        command: verifyError.command
-      });
-      return NextResponse.json({
-        error: "Mail sunucusuna bağlanılamadı.",
-        details: verifyError.message
-      }, { status: 500 });
-    }
+    // Prepare attachments for Resend
+    const resendAttachments = attachments.map(att => ({
+      filename: att.filename,
+      content: att.content.toString("base64"),
+    }));
 
     const userTypeLabel = userType === "student" ? "Öğrenci" : "Personel";
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: "inlhalk@gmail.com",
-      subject: `[Yarışma Başvurusu] - ${userTypeLabel} - ${idNumber} - ${fullName}`,
-      text: `
-        Ad Soyad: ${fullName}
-        Kullanıcı Tipi: ${userTypeLabel}
-        ${userType === 'student' ? 'Okul Numarası' : 'Sicil Numarası'}: ${idNumber}
-        E-posta: ${email}
-        Eser Adları: ${photoTitles.join(", ")}
-      `,
-      attachments,
-    };
 
-    console.log("Sending mail to admin...");
-    await transporter.sendMail(mailOptions).catch(err => {
-      console.error("Admin mail sending failed:", err);
-      throw new Error(`Admin maili gönderilemedi: ${err.message}`);
+    // 1. Send mail to admin
+    console.log("Sending mail to admin via Resend...");
+    const adminMailResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to: "inlhalk@gmail.com",
+        subject: `[Yarışma Başvurusu] - ${userTypeLabel} - ${idNumber} - ${fullName}`,
+        text: `
+          Ad Soyad: ${fullName}
+          Kullanıcı Tipi: ${userTypeLabel}
+          ${userType === 'student' ? 'Okul Numarası' : 'Sicil Numarası'}: ${idNumber}
+          E-posta: ${email}
+          Eser Adları: ${photoTitles.join(", ")}
+        `,
+        attachments: resendAttachments,
+      }),
     });
+
+    if (!adminMailResponse.ok) {
+      const errorData = await adminMailResponse.json();
+      console.error("Resend Admin Mail Error:", errorData);
+      throw new Error(`Admin maili gönderilemedi: ${JSON.stringify(errorData)}`);
+    }
     console.log("Admin mail sent successfully!");
 
     // 2. Auto-reply to the Applicant
-    const autoReplyOptions = {
-      from: process.env.GMAIL_USER,
-      to: email,
-      subject: "Başvurunuz Alındı - DPÜ Ramazan Fotoğraf Yarışması",
-      text: `Sayın ${fullName},
+    console.log(`Sending auto-reply to ${email} via Resend...`);
+    const autoReplyText = `Sayın ${fullName},
       
 "Objektifimden Kütahya’da Ramazan" fotoğraf yarışması başvurunuz başarıyla sistemimize ulaşmıştır.
 
@@ -223,15 +204,27 @@ Dumlupınar Üniversitesi & Yüzüncü Yıl Derneği
 Fotoğraf Yarışması Düzenleme Kurulu
 
 ---
-Bu e-posta, "Objektifimden Kütahya’da Ramazan" Fotoğraf Yarışması başvuru sistemi tarafından otomatik olarak oluşturulmuştur. Lütfen bu e-postayı yanıtlamayınız. Sorularınız için iletişim sayfamızdaki kanalları kullanabilirsiniz.`,
-    };
+Bu e-posta, "Objektifimden Kütahya’da Ramazan" Fotoğraf Yarışması başvuru sistemi tarafından otomatik olarak oluşturulmuştur. Lütfen bu e-postayı yanıtlamayınız. Sorularınız için iletişim sayfamızdaki kanalları kullanabilirsiniz.`;
 
-    try {
-      console.log(`Sending auto-reply to ${email}...`);
-      await transporter.sendMail(autoReplyOptions);
+    const userMailResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to: email,
+        subject: "Başvurunuz Alındı - DPÜ Ramazan Fotoğraf Yarışması",
+        text: autoReplyText,
+      }),
+    });
+
+    if (!userMailResponse.ok) {
+      const errorData = await userMailResponse.json();
+      console.error("Resend User Auto-reply Error:", errorData);
+    } else {
       console.log("Auto-reply sent successfully!");
-    } catch (replyError) {
-      console.error("Auto-reply failed (Invalid Email?):", replyError);
     }
 
     return NextResponse.json({ message: "Başvurunuz ve fotoğraflarınız başarıyla iletilmiştir. Bilgilendirme e-postası adresinize gönderildi!" });
