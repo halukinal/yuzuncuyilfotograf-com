@@ -79,8 +79,8 @@ next-env.d.ts
 node_modules/
 npm-debug.log*
 serviceAccountKey.json
-src/data/*.json
-src/data/participants.json
+# src/data/*.json (Removed to allow build)
+# src/data/participants.json (Removed to allow build)
 test_perm.txt
 yarn-debug.log*
 yarn-error.log*
