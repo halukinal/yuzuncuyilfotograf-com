@@ -60,7 +60,10 @@ export async function POST(req: NextRequest) {
   console.log(`Submission request received from IP: ${ip}`);
 
   try {
-    const formData = await req.formData();
+    const formData = await req.formData().catch(err => {
+      console.error("Error parsing form data:", err);
+      throw new Error("Form verileri okunamadı.");
+    });
 
     const fullName = (formData.get("fullName") as string)?.trim();
     const idNumber = (formData.get("idNumber") as string)?.trim();
@@ -157,9 +160,17 @@ export async function POST(req: NextRequest) {
     try {
       await transporter.verify();
       console.log("SMTP Connection verified successfully.");
-    } catch (verifyError) {
-      console.error("SMTP Verification Error:", verifyError);
-      return NextResponse.json({ error: "Mail sunucusuna bağlanılamadı. Lütfen internet bağlantınızı veya mail şifrenizi kontrol edin." }, { status: 500 });
+    } catch (verifyError: any) {
+      console.error("SMTP Verification Error Details:", {
+        message: verifyError.message,
+        stack: verifyError.stack,
+        code: verifyError.code,
+        command: verifyError.command
+      });
+      return NextResponse.json({
+        error: "Mail sunucusuna bağlanılamadı.",
+        details: verifyError.message
+      }, { status: 500 });
     }
 
     const userTypeLabel = userType === "student" ? "Öğrenci" : "Personel";
@@ -178,7 +189,10 @@ export async function POST(req: NextRequest) {
     };
 
     console.log("Sending mail to admin...");
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions).catch(err => {
+      console.error("Admin mail sending failed:", err);
+      throw new Error(`Admin maili gönderilemedi: ${err.message}`);
+    });
     console.log("Admin mail sent successfully!");
 
     // 2. Auto-reply to the Applicant
@@ -222,8 +236,15 @@ Bu e-posta, "Objektifimden Kütahya’da Ramazan" Fotoğraf Yarışması başvur
 
     return NextResponse.json({ message: "Başvurunuz ve fotoğraflarınız başarıyla iletilmiştir. Bilgilendirme e-postası adresinize gönderildi!" });
   } catch (error: any) {
-    console.error("Submission Error:", error);
-    return NextResponse.json({ error: "Bir hata oluştu. Lütfen tekrar deneyin." }, { status: 500 });
+    console.error("Full Submission Error Details:", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
+    return NextResponse.json({
+      error: "Bir hata oluştu. Lütfen tekrar deneyin.",
+      details: error.message
+    }, { status: 500 });
   }
 }
 
