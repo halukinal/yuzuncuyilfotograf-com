@@ -3,10 +3,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-!public/*.jpeg
-!public/*.jpg
-!public/*.png
-!public/*.svg
+
 # Data files containing personal information (KVKK)
 # Excel files and temp files
 # If you have specific data files like bilgi.json, consider if they should be public.
@@ -102,3 +99,11 @@ arsiv_python_v1/
 
 # OpenNext
 .open-next
+
+# Allow images in public folder
+!public/*.jpeg
+!public/*.jpg
+!public/*.png
+!public/*.svg
+!public/*.webp
+
