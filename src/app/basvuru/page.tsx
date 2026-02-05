@@ -66,13 +66,13 @@ export default function ApplicationPage() {
 
     const addFiles = (files: File[]) => {
         const validFiles = files.filter((file) => {
-            const isJpg = file.type === "image/jpeg" || file.type === "image/jpg";
+            const isValidType = file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/png";
             const isSizeOk = file.size >= 1024 * 1024 && file.size <= 10 * 1024 * 1024;
 
-            if (!isJpg) toast.error(`${file.name} sadece JPG/JPEG formatında olmalıdır.`);
+            if (!isValidType) toast.error(`${file.name} sadece JPG, JPEG veya PNG formatında olmalıdır.`);
             if (!isSizeOk) toast.error(`${file.name} boyutu 1MB ile 10MB arasında olmalıdır.`);
 
-            return isJpg && isSizeOk;
+            return isValidType && isSizeOk;
         });
 
         const combined = [...selectedFiles, ...validFiles].slice(0, 3);
@@ -269,10 +269,8 @@ export default function ApplicationPage() {
                                 <Camera size={20} className="text-[#F59E0B]" />
                                 Fotoğraf Yükle
                             </CardTitle>
-                            <CardDescription className="text-[#1A1A1A]/50 italic">
-                                En fazla 3 adet, kısa kenarı min 2400px, 150-300 DPI ve 1MB-10MB arası .jpg dosyası. <br />
-                                Dosya adı formatı: Ad_Soyad_EserinAdı_No.jpg
-                            </CardDescription>
+                            En fazla 3 adet, kısa kenarı min 2400px, 150-300 DPI ve 1MB-10MB arası .jpg, .jpeg veya .png dosyası. <br />
+                            Dosya adı formatı: Ad_Soyad_EserinAdı.jpg
                         </CardHeader>
                         <CardContent className="p-6">
                             <div
@@ -286,7 +284,7 @@ export default function ApplicationPage() {
                                     id="file-upload"
                                     type="file"
                                     multiple
-                                    accept=".jpg,.jpeg"
+                                    accept=".jpg,.jpeg,.png"
                                     className="hidden"
                                     onChange={handleFileChange}
                                     disabled={selectedFiles.length >= 3}

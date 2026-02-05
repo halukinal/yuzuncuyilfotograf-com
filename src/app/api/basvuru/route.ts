@@ -100,25 +100,24 @@ export async function POST(req: NextRequest) {
       const file = files[i];
 
       // Stricter file validation
-      if (!file.type.match(/^image\/jpe?g$/i)) {
-        return NextResponse.json({ error: "Sadece .jpg ve .jpeg formatları kabul edilmektedir." }, { status: 400 });
+      const isValidType = file.type.match(/^image\/(jpe?g|png)$/i);
+      if (!isValidType) {
+        return NextResponse.json({ error: "Sadece .jpg, .jpeg ve .png formatları kabul edilmektedir." }, { status: 400 });
       }
 
       const buffer = Buffer.from(await file.arrayBuffer());
-      // Validate magic numbers for JPEG
-      if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8) {
-        return NextResponse.json({ error: "Geçersiz dosya formatı. Lütfen gerçek bir JPEG dosyası yükleyin." }, { status: 400 });
-      }
 
       if (buffer.length < 1024 * 1024 || buffer.length > 10 * 1024 * 1024) {
         return NextResponse.json({ error: "Her dosya 1MB - 10MB arasında olmalıdır." }, { status: 400 });
       }
 
+      // Determine extension
+      const extension = file.type === "image/png" ? "png" : "jpg";
       const sanitizedTitle = sanitizeFilename(photoTitles[i] || `Eser-${i + 1}`);
-      console.log(`Attachment ${i + 1}: ${sanitizedTitle}.jpg (${(buffer.length / 1024 / 1024).toFixed(2)} MB)`);
+      console.log(`Attachment ${i + 1}: ${sanitizedTitle}.${extension} (${(buffer.length / 1024 / 1024).toFixed(2)} MB)`);
 
       attachments.push({
-        filename: `${sanitizedTitle}.jpg`,
+        filename: `${sanitizedTitle}.${extension}`,
         content: buffer,
       });
     }
@@ -139,20 +138,19 @@ export async function POST(req: NextRequest) {
 
     // Email Setup
     const transporter = nodemailer.createTransport({
-      service: "gmail",
       host: "smtp.gmail.com",
-      port: 587,
+      port: 465,
+      secure: true, // true for port 465
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS, // App Password
       },
-      secure: false,
       tls: {
         rejectUnauthorized: false
       },
-      connectionTimeout: 30000, // 30 seconds
+      connectionTimeout: 30000,
       greetingTimeout: 30000,
-      socketTimeout: 60000, // 1 minute
+      socketTimeout: 60000,
     });
 
     // Verify connection configuration
