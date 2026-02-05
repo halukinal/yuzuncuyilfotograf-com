@@ -99,3 +99,6 @@ serviceAccountKey.json
 yarisma_duzenleyici.py
 arsiv/
 arsiv_python_v1/
+
+# OpenNext
+.open-next
